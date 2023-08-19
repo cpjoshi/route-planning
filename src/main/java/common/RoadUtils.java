@@ -30,8 +30,7 @@ public class RoadUtils {
     }
 
     /**
-     * Earth is sphere, and it's weird to calculate the euclidean distance of (lat, long) coordinates.
-     * but professor says euclidean distance is good enough.
+     * change the diff in lat long in meters and then calculate euclidean distance.
      * @param lat1
      * @param long1
      * @param lat2
@@ -40,6 +39,8 @@ public class RoadUtils {
      */
     public static double getDistance(float lat1, float long1, float lat2,
                                      float long2) {
-        return Math.sqrt(Math.pow(lat2-lat1, 2) + Math.pow(long2 - long1, 2));
+        double latDiffInMeters = (lat2-lat1) * 111_229;
+        double longDiffInMeters = (long2 - long1) * 71_695;
+        return Math.sqrt((latDiffInMeters * latDiffInMeters) + (longDiffInMeters * longDiffInMeters));
     }
 }
