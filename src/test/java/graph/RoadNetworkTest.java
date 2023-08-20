@@ -26,7 +26,7 @@ class RoadNetworkTest {
         IRoadNetwork rn = new RoadNetwork();
         URI uripath = getClass().getClassLoader().getResource("osmnodesAndWays.xml").toURI();
         rn.readFromOsmFile(uripath.getPath());
-        Assertions.assertEquals("V:5, E:6", rn.toString());
-        Assertions.assertEquals("[Arc[headNodeId=500865, cost=28]]", rn.getConnections(500863).toString());
+        Assertions.assertEquals("V:5, E:3", rn.toString());
+        Assertions.assertEquals("[Arc[headNodeId=500865, cost=2]]", rn.getConnections(500863).toString());
     }
 }

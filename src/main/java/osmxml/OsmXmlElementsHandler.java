@@ -56,8 +56,8 @@ public class OsmXmlElementsHandler extends DefaultHandler {
                                 nodeTo.latitude(),
                                 nodeTo.longitude());
 
-                        long timeTakenInMilliseconds = Math.round((distance / roadSpeedKmsPerHour) * 3600 * 1000);
-                        _graph.addEdge(nodeFrom.osmid(), nodeTo.osmid(), timeTakenInMilliseconds);
+                        long timeTakenInSeconds = Math.round((distance / (1000 * roadSpeedKmsPerHour)) * 3600);
+                        _graph.addEdge(nodeFrom.osmid(), nodeTo.osmid(), timeTakenInSeconds);
                     }
                 }
                 _currentWay = null;

@@ -38,7 +38,7 @@ public class RoadNetwork implements IRoadNetwork {
     public void addEdge(int u, int v, long cost) {
         _adjList.get(u).add(new Arc(v, cost));
         _adjList.get(v).add(new Arc(u, cost));
-        _numEdges += 2;
+        _numEdges += 1;
     }
 
     @Override
