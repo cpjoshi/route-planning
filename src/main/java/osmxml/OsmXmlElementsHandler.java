@@ -48,15 +48,15 @@ public class OsmXmlElementsHandler extends DefaultHandler {
             case "way":
                 if(_currentWay.isRoad && RoadUtils.isValidRoadType(_currentWay.roadType)) {
                     for(int i=1; i<_currentWay.nodesInPath.size(); i++) {
-                        Node nodeFrom = _graph.getNode(_currentWay.nodesInPath.get(i-1));
-                        Node nodeTo = _graph.getNode(_currentWay.nodesInPath.get(i));
+                        Node nodeFrom = _graph.getOsmNode(_currentWay.nodesInPath.get(i-1));
+                        Node nodeTo = _graph.getOsmNode(_currentWay.nodesInPath.get(i));
                         int roadSpeedKmsPerHour = RoadUtils.getRoadSpeed(_currentWay.roadType);
                         double distance = RoadUtils.getDistance(nodeFrom.latitude(),
                                 nodeFrom.longitude(),
                                 nodeTo.latitude(),
                                 nodeTo.longitude());
 
-                        long timeTakenInSeconds = Math.round((distance / (1000 * roadSpeedKmsPerHour)) * 3600);
+                        int timeTakenInSeconds = (int) Math.round((distance / (1000 * roadSpeedKmsPerHour)) * 3600);
                         _graph.addEdge(nodeFrom.osmid(), nodeTo.osmid(), timeTakenInSeconds);
                     }
                 }
