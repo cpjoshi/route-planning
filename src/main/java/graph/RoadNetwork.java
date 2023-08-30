@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 /**
@@ -97,7 +98,7 @@ public class RoadNetwork implements IRoadNetwork {
         int maxNodes = Integer.MIN_VALUE, maxComponentId = Integer.MIN_VALUE;
         for(int i=0; i<_numNodes; i++) {
             if(componentOf[i] == -1) {
-                int nodesInCurrentComponent = dfs(i, currentConnectedComponent, componentOf);
+                int nodesInCurrentComponent = countComponentsDfs(i, currentConnectedComponent, componentOf);
                 if(nodesInCurrentComponent > maxNodes) {
                     maxNodes = nodesInCurrentComponent;
                     maxComponentId = currentConnectedComponent;
@@ -106,28 +107,48 @@ public class RoadNetwork implements IRoadNetwork {
             }
         }
 
-        int removedConnections = 0;
-        for(int i=_numNodes-1; i>=0; i--) {
-            if(componentOf[i] != maxComponentId) {
-                //node and node-mappings removal.
-                _nodeList.remove(i);
-                _numNodes--;
-
-                //edges removal
-                removedConnections += _adjList.get(i).size();
-                _adjList.remove(i);
+        //create a new graph with changed vertex ids, complexity O(V+E)
+        RoadNetwork rn = new RoadNetwork();
+        int startFrom = -1;
+        for(int i=0; i<_numNodes; i++) {
+            if(componentOf[i] == maxComponentId) {
+                Node nCurrent = _nodeList.get(i);
+                rn.addNode(nCurrent.osmid(), nCurrent.longitude(), nCurrent.latitude());
+                startFrom = i;
             }
         }
-        _numEdges -= (removedConnections/2);
 
-        //recreate the index
-        _osmIndex.clear();
-        for(int i=0; i<_numNodes; i++) {
-            _osmIndex.put(_nodeList.get(i).osmid(), i);
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.add(startFrom);
+        HashMap<Integer, Boolean> processed = new HashMap<>();
+
+        while (!pq.isEmpty()) {
+            int nodeId = pq.poll();
+            if(processed.containsKey(nodeId)) {
+                continue;
+            }
+
+            Node nCurrent = _nodeList.get(nodeId);
+
+            for(Arc arc : _adjList.get(nodeId)) {
+                if(processed.containsKey(arc.headNodeId())) {
+                    continue;
+                }
+                pq.add(arc.headNodeId());
+                Node nConnection = _nodeList.get(arc.headNodeId());
+                rn.addEdge(nCurrent.osmid(), nConnection.osmid(), arc.cost());
+            }
+            processed.put(nodeId, true);
         }
+
+        this._adjList = rn._adjList;
+        this._nodeList = rn._nodeList;
+        this._numNodes = rn._numNodes;
+        this._numEdges = rn._numEdges;
+        this._osmIndex = rn._osmIndex;
     }
 
-    int dfs(int startingNode, int componentId, int [] componentOf) {
+    int countComponentsDfs(int startingNode, int componentId, int [] componentOf) {
         int totalNodesTraversed = 0;
         Queue<Integer> q = new LinkedList<>();
         HashMap<Integer, Boolean> visited = new HashMap<>();
