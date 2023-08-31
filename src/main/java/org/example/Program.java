@@ -28,16 +28,25 @@ public class Program {
             System.out.println("Largest connected component: "+ rn.toString());
 
             DijkstrasAlgorithm dijkstrasAlgorithm = new DijkstrasAlgorithm(rn);
-            System.out.printf("Time-to-drive, queryTime\n");
+            System.out.printf("Time-to-drive, queryTime, SettledNodes\n");
+            long totalTime = 0;
+            long totalSettledNodes = 0;
             for(int i=0; i<100; i++) {
                 Random random = new Random();
                 int source = random.nextInt(rn.getNodesCount());
                 int dest = random.nextInt(rn.getNodesCount());
                 startTime = System.currentTimeMillis();
                 int dist = dijkstrasAlgorithm.computeShortestPath(source, dest);
-                System.out.printf("%d, %dms\n", dist, System.currentTimeMillis() - startTime);
+                totalTime += dist;
+                totalSettledNodes += dijkstrasAlgorithm.getSettledNodes();
+                System.out.printf("%s, %d, %d\n",
+                        String.format("%dm:%ds", dist/60, dist%60),
+                        dijkstrasAlgorithm.getSettledNodes(),
+                        System.currentTimeMillis() - startTime);
             }
-
+            totalTime = totalTime/100;
+            System.out.printf("Avg Travel Time: %s, Avg Settled Nodes: %d\n", String.format("%dm:%ds", totalTime/60, totalTime%60),
+                    totalSettledNodes/100);
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }

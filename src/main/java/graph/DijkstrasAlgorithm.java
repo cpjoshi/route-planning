@@ -13,7 +13,7 @@ public class DijkstrasAlgorithm {
     IRoadNetwork _graph = null;
     private int [] distances = null;
     private int [] parents = null;
-    int _sourceNodeId, _targetNodeId;
+    private int _sourceNodeId, _targetNodeId, _nodesSettled;
     public DijkstrasAlgorithm(RoadNetwork graph) {
         _graph = graph;
         distances = new int[_graph.getNodesCount()];
@@ -23,22 +23,23 @@ public class DijkstrasAlgorithm {
     public int computeShortestPath(int sourceNodeId, int targetNodeId) {
         Arrays.fill(distances, Integer.MAX_VALUE);
         Arrays.fill(parents, -1);
+        _nodesSettled = 0;
         _sourceNodeId = sourceNodeId;
         _targetNodeId = targetNodeId;
-        boolean [] processed = new boolean[_graph.getNodesCount()];
+        boolean [] settled = new boolean[_graph.getNodesCount()];
         PriorityQueue<Arc> pq = new PriorityQueue<>(Comparator.comparingInt(Arc::cost));
         pq.add(new Arc(sourceNodeId, 0));
         distances[sourceNodeId] = 0;
 
         while (!pq.isEmpty()) {
             Arc arc = pq.poll();
-            if(processed[arc.headNodeId()]) {
+            if(settled[arc.headNodeId()]) {
                 continue;
             }
 
             List<Arc> connections = _graph.getConnections(arc.headNodeId());
             for (Arc road: connections) {
-                if(processed[road.headNodeId()]) {
+                if(settled[road.headNodeId()]) {
                     continue;
                 }
 
@@ -50,13 +51,18 @@ public class DijkstrasAlgorithm {
                 }
             }
 
-            processed[arc.headNodeId()] = true;
-            if(targetNodeId != -1 && processed[targetNodeId]) {
+            settled[arc.headNodeId()] = true;
+            _nodesSettled++;
+            if(targetNodeId != -1 && settled[targetNodeId]) {
                 break;
             }
         }
 
         return distances[targetNodeId];
+    }
+
+    public int getSettledNodes() {
+        return _nodesSettled;
     }
 
     public String shortestPathString() {
