@@ -8,17 +8,17 @@ import java.util.List;
 
 public interface IRoadNetwork {
     int getNodesCount();
-    void addNode(int osmid, float longitude, float latitude);
+    void addNode(long osmid, float longitude, float latitude);
 
-    void addEdge(int u, int v, int cost);
+    void addEdge(long u, long v, int cost);
 
     Node getNode(int id);
 
     List<Arc> getConnections(int id);
 
-    Node getOsmNode(int osmid);
+    Node getOsmNode(long osmid);
 
-    List<Arc> getOsmConnections(int osmid);
+    List<Arc> getOsmConnections(long osmid);
 
     void readFromOsmFile(String osmFilePath)
             throws ParserConfigurationException, SAXException, IOException;

@@ -41,7 +41,7 @@ class RoadNetworkTest {
 
         rn.reduceToLargestConnectedComponent();
         Assertions.assertEquals("V:3, E:2", rn.toString());
-        Assertions.assertEquals("[Arc[headNodeId=3, cost=2]]", rn.getOsmConnections(500863).toString());
+        Assertions.assertEquals("[Arc[headNodeId=1, cost=2]]", rn.getOsmConnections(500863).toString());
     }
 
     @Test
@@ -57,7 +57,7 @@ class RoadNetworkTest {
 
         rn.reduceToLargestConnectedComponent();
         Assertions.assertEquals("V:3, E:3", rn.toString());
-        Assertions.assertEquals("[Arc[headNodeId=0, cost=1], Arc[headNodeId=2, cost=2]]", rn.getOsmConnections(1).toString());
+        Assertions.assertEquals("[Arc[headNodeId=2, cost=2], Arc[headNodeId=0, cost=1]]", rn.getOsmConnections(1).toString());
     }
 
     @Test
@@ -105,7 +105,7 @@ class RoadNetworkTest {
         rn.reduceToLargestConnectedComponent();
         Assertions.assertEquals("V:4, E:4", rn.toString());
         Assertions.assertFalse(rn.getConnections(1).toString().equals("[Arc[headNodeId=0, cost=2], Arc[headNodeId=4, cost=2]]"));
-        Assertions.assertEquals("[Arc[headNodeId=0, cost=2], Arc[headNodeId=2, cost=2]]", rn.getConnections(1).toString());
+        Assertions.assertEquals("[Arc[headNodeId=2, cost=2], Arc[headNodeId=0, cost=2]]", rn.getConnections(1).toString());
     }
 
 

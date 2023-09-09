@@ -18,16 +18,16 @@ public class OsmXmlElementsHandler extends DefaultHandler {
         switch (qName) {
             case "node":
                 _currentWay = null;
-                _graph.addNode(Integer.parseInt(attributes.getValue("id")),
+                _graph.addNode(Long.parseLong(attributes.getValue("id")),
                         Float.parseFloat(attributes.getValue("lon")),
                         Float.parseFloat(attributes.getValue("lat")));
                 break;
             case "way":
-                _currentWay = new WayContext(Integer.parseInt(attributes.getValue("id")));
+                _currentWay = new WayContext(Long.parseLong((attributes.getValue("id"))));
                 break;
             case "nd":
                 if(_currentWay != null) {
-                    _currentWay.nodesInPath.add(Integer.parseInt(attributes.getValue("ref")));
+                    _currentWay.nodesInPath.add(Long.parseLong((attributes.getValue("ref"))));
                 }
                 break;
             case "tag":

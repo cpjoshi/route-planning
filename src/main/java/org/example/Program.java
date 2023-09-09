@@ -49,8 +49,8 @@ public class Program {
         long totalSettledNodes = 0;
         long totalQueryTime = 0;
 
+        Random random = new Random();
         for(int i=0; i<100; i++) {
-            Random random = new Random();
             int source = random.nextInt(rn.getNodesCount());
             int dest = random.nextInt(rn.getNodesCount());
             startTime = System.currentTimeMillis();

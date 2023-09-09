@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -24,7 +25,7 @@ import java.util.Queue;
 public class RoadNetwork implements IRoadNetwork {
     private ArrayList<ArrayList<Arc>> _adjList = null;
     private ArrayList<Node> _nodeList = null;
-    private HashMap<Integer, Integer> _osmIndex = null;
+    private HashMap<Long, Integer> _osmIndex = null;
     private int _numNodes = 0;
     private int _numEdges = 0;
     public RoadNetwork() {
@@ -34,7 +35,7 @@ public class RoadNetwork implements IRoadNetwork {
     }
 
     @Override
-    public void addNode(int osmid, float longitude, float latitude) {
+    public void addNode(long osmid, float longitude, float latitude) {
         ++_numNodes;
         _nodeList.add(new Node(osmid, latitude, longitude));
         _adjList.add(new ArrayList<>());
@@ -47,7 +48,7 @@ public class RoadNetwork implements IRoadNetwork {
 
 
     @Override
-    public void addEdge(int u, int v, int cost) {
+    public void addEdge(long u, long v, int cost) {
         int from = _osmIndex.get(u);
         int to = _osmIndex.get(v);
         _adjList.get(from).add(new Arc(to, cost));
@@ -56,7 +57,7 @@ public class RoadNetwork implements IRoadNetwork {
     }
 
     @Override
-    public Node getOsmNode(int osmid) {
+    public Node getOsmNode(long osmid) {
         if(!_osmIndex.containsKey(osmid)) {
             return null;
         }
@@ -66,7 +67,7 @@ public class RoadNetwork implements IRoadNetwork {
     }
 
     @Override
-    public List<Arc> getOsmConnections(int osmid) {
+    public List<Arc> getOsmConnections(long osmid) {
         if(!_osmIndex.containsKey(osmid)) {
             return null;
         }
@@ -118,7 +119,7 @@ public class RoadNetwork implements IRoadNetwork {
             }
         }
 
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        Queue<Integer> pq = new LinkedList<>();
         pq.add(startFrom);
         HashMap<Integer, Boolean> processed = new HashMap<>();
 
