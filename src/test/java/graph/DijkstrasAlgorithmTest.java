@@ -37,11 +37,22 @@ class DijkstrasAlgorithmTest {
         Assertions.assertEquals("V:9, E:13", rn.toString());
 
         DijkstrasAlgorithm dijkstrasAlgorithm = new DijkstrasAlgorithm(rn);
-        int dist = dijkstrasAlgorithm.computeShortestPath(0, 8);
-        Assertions.assertEquals(5, dist);
+        Assertions.assertEquals(5, dijkstrasAlgorithm.computeShortestPath(0, 8));
         Assertions.assertEquals(2, dijkstrasAlgorithm.computeShortestPath(0,4));
         Assertions.assertEquals(5, dijkstrasAlgorithm.computeShortestPath(4,8));
-
         System.out.println(dijkstrasAlgorithm.shortestPathString());
+
+        //landmarks test
+        LandmarkAlgorithm landmarkAlgorithm = new LandmarkAlgorithm(rn);
+        //no landmark test
+        Assertions.assertEquals(5, landmarkAlgorithm.computeShortestPath(0, 8));
+        Assertions.assertEquals(2, landmarkAlgorithm.computeShortestPath(0,4));
+        Assertions.assertEquals(5, landmarkAlgorithm.computeShortestPath(4,8));
+
+        landmarkAlgorithm.selectLandMarks(3);
+        landmarkAlgorithm.precomputeLandmarkDistances();
+        Assertions.assertEquals(5, landmarkAlgorithm.computeShortestPath(0, 8));
+        Assertions.assertEquals(2, landmarkAlgorithm.computeShortestPath(0,4));
+        Assertions.assertEquals(5, landmarkAlgorithm.computeShortestPath(4,8));
     }
 }

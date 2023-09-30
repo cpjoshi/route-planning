@@ -58,7 +58,11 @@ public class DijkstrasAlgorithm {
             }
         }
 
-        return distances[targetNodeId];
+        return (targetNodeId == -1) ? -1 : distances[targetNodeId];
+    }
+
+    public int[] getDistances() {
+        return distances;
     }
 
     public int getSettledNodes() {
