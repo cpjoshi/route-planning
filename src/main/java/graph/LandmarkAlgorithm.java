@@ -105,10 +105,10 @@ public class LandmarkAlgorithm {
                 //from a landmark to target node distance is pre-computed.
                 if(_landmarksDistances.containsKey(road.headNodeId())) {
                     int[] landMarkDistances = _landmarksDistances.get(road.headNodeId());
-                    int distanceToTargetFromThisLandMark = distances[arc.headNodeId()] + road.cost() + landMarkDistances[targetNodeId];
-                    if(distanceToTargetFromThisLandMark < distances[targetNodeId]) {
-                        distances[targetNodeId] = distanceToTargetFromThisLandMark;
-                        pq.add(new Arc(targetNodeId, distanceToTargetFromThisLandMark));
+                    int distanceToTargetViaThisLandMark = distances[arc.headNodeId()] + road.cost() + landMarkDistances[targetNodeId];
+                    if(distanceToTargetViaThisLandMark < distances[targetNodeId]) {
+                        distances[targetNodeId] = distanceToTargetViaThisLandMark;
+                        pq.add(new Arc(targetNodeId, distanceToTargetViaThisLandMark));
                     }
                 }
 
