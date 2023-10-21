@@ -14,6 +14,8 @@ public interface IRoadNetwork {
 
     Node getNode(int id);
 
+    int getNodeIndex(long osmid);
+
     List<Arc> getConnections(int id);
 
     Node getOsmNode(long osmid);

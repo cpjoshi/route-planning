@@ -81,4 +81,23 @@ public class DijkstrasAlgorithm {
         sb.append(_sourceNodeId);
         return sb.toString();
     }
+
+    /**
+     * use https://bigquerygeoviz.appspot.com/ to visualize this string as a full path
+     * @return geo visualization query to see the path in maps
+     */
+    public String shortestPathLatLongString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ST_GEOGFROMTEXT('MULTILINESTRING((");
+        while (parents[_targetNodeId] != _sourceNodeId) {
+            Node n = _graph.getNode(_targetNodeId);
+            sb.append(String.format("%f %f,", n.longitude(), n.latitude()));
+            _targetNodeId = parents[_targetNodeId];
+        }
+        Node n = _graph.getNode(_sourceNodeId);
+        sb.append(String.format("%f %f", n.longitude(), n.latitude()));
+        sb.append("))') AS shortestPath");
+        return sb.toString();
+    }
+
 }

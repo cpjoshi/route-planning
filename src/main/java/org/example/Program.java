@@ -2,6 +2,7 @@ package org.example;
 
 import graph.DijkstrasAlgorithm;
 import graph.LandmarkAlgorithm;
+import graph.Node;
 import graph.RoadNetwork;
 import org.xml.sax.SAXException;
 
@@ -19,7 +20,13 @@ public class Program {
      */
     public static void main(final String[] args) {
         try {
-            String fileUrl = "file:/C:/Users/chjos/Downloads/saarland/saarland.osm";
+            String fileUrl = "file:/C:/Users/chjos/Downloads/bangalore/bangaloremap.xml";
+            System.out.println("Analyzing bangalore...");
+            osmDataAnalysis(fileUrl);
+
+            /*
+
+            fileUrl = "file:/C:/Users/chjos/Downloads/saarland/saarland.osm";
             System.out.println("Analyzing saarland...");
             //osmDataAnalysis(fileUrl);
             osmDataShortestDistanceComparison(fileUrl);
@@ -28,6 +35,8 @@ public class Program {
             System.out.println("Analyzing baden-wuerttemberg...");
             //osmDataAnalysis(fileUrl);
             osmDataShortestDistanceComparison(fileUrl);
+
+             */
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }
@@ -51,6 +60,16 @@ public class Program {
         long totalTime = 0;
         long totalSettledNodes = 0;
         long totalQueryTime = 0;
+
+/*
+        //test for two random points in bangalore.
+        int srcNodeId = rn.getNodeIndex(10282796510L);
+        int destNodeId = rn.getNodeIndex(1370252774L);
+        if(srcNodeId != -1 && destNodeId != -1) {
+            int dijDist = dijkstrasAlgorithm.computeShortestPath(srcNodeId, destNodeId);
+            String path = dijkstrasAlgorithm.shortestPathLatLongString();
+        }
+*/
 
         Random random = new Random();
         for(int i=0; i<100; i++) {

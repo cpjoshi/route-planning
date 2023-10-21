@@ -76,6 +76,15 @@ public class RoadNetwork implements IRoadNetwork {
         return _adjList.get(index);
     }
 
+    @Override
+    public int getNodeIndex(long osmid) {
+        if(!_osmIndex.containsKey(osmid)) {
+            return -1;
+        }
+
+        return _osmIndex.get(osmid);
+    }
+
     public Node getNode(int id) {
         return _nodeList.get(id);
     }
